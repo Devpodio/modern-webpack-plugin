@@ -44,7 +44,7 @@ class ModernWebpackPlugin {
     compiler.hooks.compilation.tap(ID, (compilation) => {
       // For html-webpack-plugin 4.0
       // HtmlWebpackPlugin.getHooks(compilation).alterAssetTags.tapAsync(ID, async (data, cb) => {
-      compilation.hooks.htmlWebpackPluginAlterAssetTags.tapAsync(ID, (data, cb) => {
+      HtmlWebpackPlugin.getHooks(compilation).alterAssetTags.tapAsync(ID, async (data, cb) => {
         // get stats, write to disk
         this.assets = {
           name: data.plugin.options.filename,
@@ -61,7 +61,7 @@ class ModernWebpackPlugin {
     compiler.hooks.compilation.tap(ID, (compilation) => {
       // For html-webpack-plugin 4.0
       // HtmlWebpackPlugin.getHooks(compilation).alterAssetTags.tapAsync(ID, async (data, cb) => {
-      compilation.hooks.htmlWebpackPluginAlterAssetTags.tapAsync(ID, async (data, cb) => {
+      HtmlWebpackPlugin.getHooks(compilation).alterAssetTags.tapAsync(ID, async (data, cb) => {
         // use <script type="module"> for modern assets
         data.body.forEach((tag) => {
           if (tag.tagName === 'script' && tag.attributes) {
