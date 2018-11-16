@@ -8,8 +8,9 @@ const EventEmitter = require('events')
 const safariFix = `!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()},!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();`
 
 const assetsMap = {}
+const watcher = new EventEmitter()
 
-class ModernWebpackPlugin extends EventEmitter {
+class ModernWebpackPlugin {
   constructor({ targetDir, isModernBuild }) {
     super();
     this.targetDir = targetDir
@@ -26,13 +27,13 @@ class ModernWebpackPlugin extends EventEmitter {
 
   set assets({ name, content }) {
     assetsMap[name] = content
-    this.emit(name)
+    watcher.emit(name)
   }
 
   getAssets(name) {
     return assetsMap[name] ||
       new Promise((resolve) => {
-        this.once(name, () => {
+        watcher.once(name, () => {
           return assetsMap[name] && resolve(assetsMap[name])
         })
         return assetsMap[name] && resolve(assetsMap[name])
