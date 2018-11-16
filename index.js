@@ -12,7 +12,6 @@ const watcher = new EventEmitter()
 
 class ModernWebpackPlugin {
   constructor({ targetDir, isModernBuild }) {
-    super();
     this.targetDir = targetDir
     this.isModernBuild = isModernBuild
   }
