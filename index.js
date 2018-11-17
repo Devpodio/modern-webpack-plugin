@@ -16,28 +16,28 @@ class ModernWebpackPlugin {
     this.applyModern(compiler)
   }
 
-  createResourceHints(href,type){
+  createResourceHints(href, type) {
     const payload = {
       tagName: 'link',
       closeTag: true,
       attributes: {
-        rel: type === 'script' ? 'modulepreload' : 'preload'
-        href: href
+        rel: type === 'script' ? 'modulepreload' : 'preload',
+        href
       }
     }
-    if(type === 'style'){
+    if (type === 'style') {
       payload.attributes.as = type
     }
     return preload;
   }
-  addResourceHintTags (data) {
+  addResourceHintTags(data) {
     const newHeadAsset = []
     data.body = data.body.map((tag) => {
 
     })
     data.head = data.head.map((tag) => {
-      if(tag.tagName.toLowerCase() === 'link' && tag.attributes && !tag.attributes.rel) {
-        newHeadAsset.push(this.createResourceHints(tag.attributes.href,'style'));
+      if (tag.tagName.toLowerCase() === 'link' && tag.attributes && !tag.attributes.rel) {
+        newHeadAsset.push(this.createResourceHints(tag.attributes.href, 'style'));
       }
       return tag;
     })
