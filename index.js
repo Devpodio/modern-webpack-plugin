@@ -1,18 +1,11 @@
-/*
- ** This plugin is inspired by @vue/cli-service ModernModePlugin
- ** https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/webpack/ModernModePlugin.js
- */
-
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const debug = require('debug')('modern-plugin')
+process.env.DEBUG='modern'
+const debug = require('debug')('modern')
 // https://gist.github.com/samthor/64b114e4a4f539915a95b91ffd340acc
 const safariFix = `!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()},!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();`
 
 class ModernWebpackPlugin {
-  constructor({ targetDir, isModernBuild }) {
-    this.targetDir = targetDir
-  }
-
+  constructor() {}
   apply(compiler) {
     this.applyModern(compiler)
   }
@@ -49,7 +42,7 @@ class ModernWebpackPlugin {
       return tag;
     })
     debug('new head tags', JSON.stringify(newHeadAsset));
-    data.head.push(...newHeadAsset);
+    data.head.unshift(...newHeadAsset);
     return data;
   }
   applyModern(compiler) {
@@ -57,7 +50,7 @@ class ModernWebpackPlugin {
     compiler.hooks.compilation.tap(ID, (compilation) => {
       // For html-webpack-plugin 4.0
       // HtmlWebpackPlugin.getHooks(compilation).alterAssetTags.tapAsync(ID, async (data, cb) => {
-      HtmlWebpackPlugin.getHooks(compilation).alterAssetTags.tapAsync(ID, async (data, cb) => {
+      compilation.hooks.htmlWebpackPluginAlterAssetTags.tapAsync(ID, async (data, cb) => {
         // use <script type="module"> for modern assets
         data = this.addResourceHintTags(data);
 
