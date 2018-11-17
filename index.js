@@ -35,7 +35,7 @@ class ModernWebpackPlugin {
     const newHeadAsset = []
     data.body = data.body.map((tag) => {
       if (tag.tagName.toLowerCase() === 'script' && tag.attributes) {
-        debug('adding script resource hint to' tag.attributes.src)
+        debug('adding script resource hint to', tag.attributes.src)
         newHeadAsset.push(this.createResourceHints(tag.attributes.src, 'script'));
         tag.attributes.type = 'module'
       }
@@ -43,7 +43,7 @@ class ModernWebpackPlugin {
     })
     data.head = data.head.map((tag) => {
       if (tag.tagName.toLowerCase() === 'link' && tag.attributes) {
-        debug('adding style resource hint to' tag.attributes.href)
+        debug('adding style resource hint to', tag.attributes.href)
         newHeadAsset.push(this.createResourceHints(tag.attributes.href, 'style'));
       }
       return tag;
