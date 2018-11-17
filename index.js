@@ -5,7 +5,9 @@ const debug = require('debug')('modern')
 const safariFix = `!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()},!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();`
 
 class ModernWebpackPlugin {
-  constructor() {}
+  constructor(pre='preload') {
+    this.pre = pre;
+  }
   apply(compiler) {
     this.applyModern(compiler)
   }
@@ -15,7 +17,7 @@ class ModernWebpackPlugin {
       tagName: 'link',
       closeTag: true,
       attributes: {
-        rel: type === 'script' ? 'modulepreload' : 'preload',
+        rel: (type === 'script' && this.pre !== 'preload') ? 'modulepreload' : 'preload',
         href
       }
     }
@@ -30,7 +32,9 @@ class ModernWebpackPlugin {
       if (tag.tagName.toLowerCase() === 'script' && tag.attributes) {
         debug('adding script resource hint to', tag.attributes.src)
         newHeadAsset.push(this.createResourceHints(tag.attributes.src, 'script'));
-        tag.attributes.type = 'module'
+        if(this.pre !== 'preload') {
+          tag.attributes.type = 'module'
+        }        
       }
       return tag;
     })
