@@ -12,5 +12,8 @@
   "private": false,
   "dependencies": {
     "html-webpack-plugin": "^4.0.0-beta.4"
+  },
+  "devDependencies": {
+    "debug": "^4.1.0"
   }
 }
