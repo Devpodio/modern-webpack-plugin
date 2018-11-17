@@ -1,6 +1,6 @@
 {
   "name": "@devpodio/modern-webpack-plugin",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "convert your assets to modern style",
   "publishConfig": {
     "access": "public"
