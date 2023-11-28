@@ -11,7 +11,7 @@
   "license": "Apache-2",
   "private": false,
   "dependencies": {
-    "html-webpack-plugin": "^3.2.0"
+    "html-webpack-plugin": "^5.5.0"
   },
   "devDependencies": {
     "debug": "^4.1.0"
